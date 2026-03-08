@@ -1,17 +1,23 @@
-const express = require('express');
+const express = require("express");
+require("dotenv").config();
+
+const userRoutes = require("./src/routes/userRoutes");
+const newsRoutes = require("./src/routes/newsRoutes");
+
 const app = express();
-const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(port, (err) => {
-    if (err) {
-        return console.log('Something bad happened', err);
-    }
-    console.log(`Server is listening on ${port}`);
-});
+app.use("/users", userRoutes);
+app.use("/news", newsRoutes);
 
+const PORT = process.env.PORT || 3000;
 
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 module.exports = app;
